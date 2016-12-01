@@ -12,6 +12,6 @@ namespace BangazonUserAuth.ViewModels
   {
     public IEnumerable<Product> Products { get; set; }
     public SubProductType SubProductType { get; set; }
-    public AllProductsViewModel(BangazonUserAuthContext ctx) : base(ctx) { }
+    public AllProductsViewModel(BangazonWebContext ctx) : base(ctx) { }
   }
 }

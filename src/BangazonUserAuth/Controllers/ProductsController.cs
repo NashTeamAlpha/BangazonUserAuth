@@ -17,9 +17,9 @@ namespace BangazonUserAuth.Controllers
     public class ProductsController : Controller
     {
         //Bringing in the context from our DB and storing it in a local varialbe named BangazonUserAuthContext.
-        private BangazonUserAuthContext context;
+        private BangazonWebContext context;
 
-        public ProductsController (BangazonUserAuthContext ctx)
+        public ProductsController (BangazonWebContext ctx)
         {
             context = ctx;
         }

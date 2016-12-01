@@ -15,8 +15,8 @@ namespace BangazonUserAuth.ViewModels
     public List<SelectListItem> ProductTypesList { get; set; }
     public List<SelectListItem> SubProductTypesList { get; set; }
     public Product Product {get; set;}
-    private BangazonUserAuthContext context;
-    public ProductTypesListViewModel(BangazonUserAuthContext ctx) : base(ctx)
+    private BangazonWebContext context;
+    public ProductTypesListViewModel(BangazonWebContext ctx) : base(ctx)
     { 
         context = ctx;
         this.ProductTypesList = context.ProductType

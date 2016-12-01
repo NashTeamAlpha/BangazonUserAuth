@@ -15,13 +15,13 @@ namespace BangazonUserAuth.ViewModels
     public List<SelectListItem> ListOfPaymentTypes { get; set; }
     public List<Product> Products { get; set; }
     public double CartTotal {get; set;}
-    private BangazonUserAuthContext context;
+    private BangazonWebContext context;
     private ActiveCustomer singleton = ActiveCustomer.Instance;
     
     //Method Name: ShoppingCartViewModel
     //Purpose of the Method: Upon construction this should take the context and send a list of select items of the type PaymentType to the View. They should be the paymentTypes of the active customer.
     //Arguments in Method: BangazonUserAuthContext
-    public ShoppingCartViewModel(BangazonUserAuthContext ctx) : base (ctx)
+    public ShoppingCartViewModel(BangazonWebContext ctx) : base (ctx)
     {
         context = ctx;
         this.ListOfPaymentTypes = context.PaymentType

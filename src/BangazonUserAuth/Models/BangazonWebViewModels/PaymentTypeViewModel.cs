@@ -11,6 +11,6 @@ namespace BangazonUserAuth.ViewModels
     {
         public PaymentType PaymentType { get; set; }
 
-        public PaymentTypeViewModel(BangazonUserAuthContext ctx) : base(ctx) { } 
+        public PaymentTypeViewModel(BangazonWebContext ctx) : base(ctx) { } 
     }
 }

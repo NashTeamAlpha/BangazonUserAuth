@@ -11,6 +11,6 @@ namespace BangazonUserAuth.ViewModels
     {
         public Customer Customer { get; set; }
 
-        public NewCustomerViewModel(BangazonUserAuthContext ctx) : base(ctx) { } 
+        public NewCustomerViewModel(BangazonWebContext ctx) : base(ctx) { } 
     }
 }

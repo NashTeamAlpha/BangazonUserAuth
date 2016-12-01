@@ -13,7 +13,7 @@ namespace BangazonUserAuth.ViewModels
   public class BaseViewModel
   {
     public List<SelectListItem> ListOfCustomers { get; set; }
-    private BangazonUserAuthContext context;
+    private BangazonWebContext context;
     private ActiveCustomer singleton = ActiveCustomer.Instance;
     public string Route {
       get {
@@ -80,7 +80,7 @@ namespace BangazonUserAuth.ViewModels
         }
       }
     }
-    public BaseViewModel(BangazonUserAuthContext ctx)
+    public BaseViewModel(BangazonWebContext ctx)
     {
         context = ctx;
         this.ListOfCustomers = context.Customer

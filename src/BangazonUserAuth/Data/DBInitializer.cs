@@ -17,7 +17,7 @@ namespace BangazonUserAuth.Data
         //Arguments in Method: None.
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new BangazonUserAuthContext(serviceProvider.GetRequiredService<DbContextOptions<BangazonUserAuthContext>>()))
+            using (var context = new BangazonWebContext(serviceProvider.GetRequiredService<DbContextOptions<BangazonWebContext>>()))
             {
               // Look for any products.
               if (context.Product.Any())
