@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using BangazonUserAuth.Models;
 using BangazonUserAuth.Models.AccountViewModels;
 using BangazonUserAuth.Services;
+using BangazonUserAuth.Data;
 
 namespace BangazonUserAuth.Controllers
 {
@@ -22,20 +23,24 @@ namespace BangazonUserAuth.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private BangazonWebContext context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            BangazonWebContext ctx)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            context = ctx;
         }
+
 
         //
         // GET: /Account/Login
@@ -105,7 +110,23 @@ namespace BangazonUserAuth.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                //Create a new customer with first and last name properties
+                Customer customer = new Customer();
+                customer.FirstName = model.FirstName;
+                customer.LastName = model.LastName;
+                //Create a new Customer Controller instance
+                //Use the new Customer method to post the Customer instance to the old database
+                //Get the Customer Id back
+                CustomersController customersController = new CustomersController(context);
+                int ActiveCustomerId = customersController.New(customer);
+                //Set the customer Id on the new Application User
+                //Resume logic that's already written
+                var user = new ApplicationUser
+                {
+                    CustomerId = ActiveCustomerId,
+                    UserName = model.Email,
+                    Email = model.Email
+                };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
