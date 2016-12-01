@@ -1,0 +1,63 @@
+@model BangazonUserAuth.ViewModels.ProductTypesListViewModel
+
+@{
+  ViewData["Title"] = "New Product";
+}
+
+<h1> Add a New Product </h1>
+
+<form asp-controller="Products" asp-action="New" method="post">
+  <div class="form-horizontal">
+    <hr />
+
+    <input type="hidden" asp-for="Product.CustomerId" value=@Model.ChosenCustomer.CustomerId class="form-control" />
+    
+    <div asp-validation-summary="ModelOnly">
+      <div class="form-group">
+        <label asp-for="Product.Name" class="col-md-2 control-label"> Product Name </label>
+        <div class="col-md-10">
+          <input asp-for="Product.Name" class="form-control" type="text" />
+          <span asp-validation-for="Product.Name" class="text-danger" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label asp-for="Product.Description" class="col-md-2 control-label"> Product Description </label>
+        <div class="col-md-10">
+            <input asp-for="Product.Description" class="form-control" type="text" />
+            <span asp-validation-for="Product.Description" class="text-danger" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label asp-for="Product.Price" class="col-md-2 control-label"> Product Price </label>
+        <div class="col-md-10">
+            <input asp-for="Product.Price" class="form-control" />
+            <span asp-validation-for="Product.Price" class="text-danger" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label asp-for="ProductTypesList" class="col-md-2 control-label"> Product Categories </label>
+        <div class="col-md-10">
+            @Html.DropDownList("ProductTypesList")
+            <span asp-validation-for="ProductTypesList" class="text-danger" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label asp-for="Product.SubProductTypeId" class="col-md-2 control-label"> Sub-Categories </label>
+        <div class="col-md-10">
+            <select asp-for="Product.SubProductTypeId" 
+                    asp-items="Model.SubProductTypesList">
+            </select>
+            <span asp-validation-for="Product.SubProductTypeId" class="text-danger" />
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Add Product" class="btn btn-default" />
+        </div>
+      </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

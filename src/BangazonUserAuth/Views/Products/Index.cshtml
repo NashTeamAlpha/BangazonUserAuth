@@ -1,0 +1,17 @@
+@model BangazonUserAuth.ViewModels.AllProductsViewModel
+
+<h1> Welcome to Bangazon! </h1>
+<div class="container">
+  @foreach (var product in Model.Products)
+  {
+      <div class="row top-buffer">
+          <div class="col-md-4">
+            <a asp-action="Single" asp-route-id="@product.ProductId">
+              @Html.DisplayFor(modelItem => product.Name)
+            </a>
+          </div>
+          <div class="col-md-6">@Html.DisplayFor(modelItem => product.Description)</div>
+          <div class="col-md-2">@Html.DisplayFor(modelItem => product.Price)</div>
+      </div>
+  }
+</div>

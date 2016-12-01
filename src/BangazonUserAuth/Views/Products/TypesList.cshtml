@@ -1,0 +1,18 @@
+@model BangazonUserAuth.ViewModels.AllSubProductTypesViewModel
+
+@{
+  ViewData["Title"] = "Product Sub-Types";
+}
+<hr>
+<h2>@Model.ProductType.Name</h2>
+<div class="row top-buffer">
+  @foreach (var subProductType in Model.SubProductTypes)
+  {
+    <div class="col-md-4">
+      <a asp-action="ProductsInSubType" asp-route-id="@subProductType.SubProductTypeId">
+        @Html.DisplayFor(modelItem => subProductType.Name)
+      </a>
+    </div>
+  }
+</div>
+

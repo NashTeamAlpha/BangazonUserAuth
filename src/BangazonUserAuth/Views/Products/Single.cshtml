@@ -1,0 +1,22 @@
+@model BangazonUserAuth.ViewModels.SingleProductViewModel
+
+@{
+  ViewData["Title"] = "Product Details";
+}
+<div class="row text-center"> <h1> @ViewData["Title"] </h1> </div>
+  <!--Name-->
+<h2 class="row text-center"> @Html.DisplayFor(model => model.Product.Name) </h2>
+  <!--Description-->
+<p class="row text-center"> @Html.DisplayFor(model => model.Product.Description) </p>
+  <!--Seller-->
+<p class="row text-center">Seller: @Html.DisplayFor(model => model.CustomerName) </p>
+  <!--Price-->
+<p class="row text-center"> @Html.DisplayFor(model => model.Product.Price) </p>
+  <!--Button with Add to Cart on it-->
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6 text-center">
+  <button id="AddToCart" value="@Model.Product.ProductId" class="btn btn-large btn-success"> Add to Cart </button>
+  </div>
+  <div class="col-md-3"></div>
+</div>  

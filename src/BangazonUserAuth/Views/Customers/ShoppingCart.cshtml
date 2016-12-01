@@ -1,0 +1,32 @@
+@model BangazonUserAuth.ViewModels.ShoppingCartViewModel
+
+@{
+  ViewData["Title"] = "Shopping Cart";
+}
+<h1> @ViewData["Title"] </h1>
+<div class="row text-right">
+   @Html.DropDownList("ListOfPaymentTypes")
+</div>
+<div class ="row text-right">
+  <button asp-action="Payment" class="btn btn-danger btn-lg"><a asp-action="Payment">Add Payment</a></button>
+</div><br>
+<div class ="row text-right">
+  <button id="submitOrder" class="btn btn-danger btn-lg">Submit Order</button>
+</div>
+  <!--Button with Add to Cart on it-->
+@foreach (var product in Model.Products)
+{
+
+  <div class="row text-left">
+    <div class="col-md-4">
+      <a asp-action="Single" asp-route-id="@product.ProductId" asp-controller="Products">
+        @Html.DisplayFor(modelItem => product.Name)
+      </a>
+    </div>
+    <div>@Html.DisplayFor(modelItem => product.Description)</div>
+    <div>@Html.DisplayFor(modelItem => product.Price)</div>
+</div>
+}
+<div class="row">
+  <strong>Cart Total:</strong> $@Model.CartTotal
+</div>

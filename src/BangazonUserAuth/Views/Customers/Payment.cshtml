@@ -1,0 +1,88 @@
+@model BangazonUserAuth.ViewModels.PaymentTypeViewModel
+
+@{
+    ViewData["Title"] = "New Payment Type";
+}
+
+<h1>Add a New Payment Type</h1>
+
+<form asp-action="Payment" method="Post" asp-controller="Customers">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>    
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="hidden" asp-for="PaymentType.CustomerId" value=@Model.ChosenCustomer.CustomerId class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.FirstName" class="col-md-2 control-label">First Name</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.FirstName" class="form-control" />
+                <span asp-validation-for="PaymentType.FirstName" class="text-danger" />
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label asp-for="PaymentType.LastName" class="col-md-2 control-label">Last Name</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.LastName" class="form-control" />
+                <span asp-validation-for="PaymentType.LastName" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.StreetAddress" class="col-md-2 control-label">Street Address</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.StreetAddress" class="form-control" />
+                <span asp-validation-for="PaymentType.StreetAddress" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.State" class="col-md-2 control-label">State</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.State" class="form-control" />
+                <span asp-validation-for="PaymentType.State" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.City" class="col-md-2 control-label">City</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.City" class="form-control" />
+                <span asp-validation-for="PaymentType.City" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.ZipCode" class="col-md-2 control-label">Zip Code</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.ZipCode" class="form-control" />
+                <span asp-validation-for="PaymentType.ZipCode" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.Processor" class="col-md-2 control-label">Type of card</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.Processor" class="form-control" />
+                <span asp-validation-for="PaymentType.Processor" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.CardNumber" class="col-md-2 control-label">Card Number</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.CardNumber" class="form-control" />
+                <span asp-validation-for="PaymentType.CardNumber" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PaymentType.ExpirationDate" class="col-md-2 control-label">Expiration Date</label>
+            <div class="col-md-10">
+                <input asp-for="PaymentType.ExpirationDate" class="form-control" />
+                <span asp-validation-for="PaymentType.ExpirationDate" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create Payment Type" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+</form>
