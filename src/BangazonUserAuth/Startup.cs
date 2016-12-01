@@ -98,3 +98,4 @@ namespace BangazonUserAuth
         }
     }
 }
+//Note added for initial commit
