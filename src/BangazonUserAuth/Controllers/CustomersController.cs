@@ -41,16 +41,25 @@ namespace BangazonUserAuth.Controllers
         //Arguments in Method: A new customer object taken from the form of Customer/New.cshtml.
         [HttpPost]
         [ValidateAntiForgeryTokenAttribute]
-        public async Task<IActionResult> New(Customer customer)
+        public int New(Customer customer)
         {
             if (ModelState.IsValid)
             {
                 context.Add(customer);
-                await context.SaveChangesAsync();
-                return RedirectToAction("Index", "Products");
+                context.SaveChangesAsync();
+                Customer activeCustomer = context.Customer.Single(c => c.FirstName == customer.FirstName && c.LastName == customer.LastName);
+                if (activeCustomer != null)
+                {
+                   return activeCustomer.CustomerId;
+                       
+                } else
+                {
+                    return 0;
+                }
             }
-            return BadRequest();
+            return 0;
         }
+
 
         //Method Name: ShoppingCart
         //Purpose of the Method: 
