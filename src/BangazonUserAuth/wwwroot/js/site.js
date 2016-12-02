@@ -1,4 +1,4 @@
-﻿
+﻿$(document).ready(function () {
 //This method waits for the Category select drop down in the add new product form to be changed- when it is- this method gets all SubProductTypes inside the selected category and populates the subcategory drop down list thats just below the select category drop down list in the add product form. 
     $("#ProductTypesList").on("change", function(e) {
         $.ajax({

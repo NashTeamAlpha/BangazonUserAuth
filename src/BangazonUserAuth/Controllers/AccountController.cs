@@ -127,6 +127,10 @@ namespace BangazonUserAuth.Controllers
                     UserName = model.Email,
                     Email = model.Email
                 };
+
+                customer.CustomerId = ActiveCustomerId;
+                ActiveCustomer.Instance.Customer = customer;
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
