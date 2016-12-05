@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using BangazonUserAuth.Models;
 using BangazonUserAuth.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace BangazonUserAuth.ViewModels
 {
@@ -12,6 +13,6 @@ namespace BangazonUserAuth.ViewModels
     {
         public IEnumerable<ProductType> ProductTypes { get; set; }
 
-        public AllProductTypesViewModel(BangazonWebContext ctx) : base(ctx) { } 
+        public AllProductTypesViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2) : base(userManager, ctx1, ctx2) { } 
     }
 }

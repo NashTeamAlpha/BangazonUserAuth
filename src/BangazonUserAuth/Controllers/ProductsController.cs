@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using BangazonUserAuth.Data;
 using BangazonUserAuth.Models;
 using BangazonUserAuth.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BangazonUserAuth.Controllers
 {
@@ -16,23 +16,26 @@ namespace BangazonUserAuth.Controllers
     //Methods in Class: Index(), Types(), TypesList(), Single(), New(), Overloaded New(Product product), AddToCart().
     public class ProductsController : Controller
     {
-        //Bringing in the context from our DB and storing it in a local varialbe named BangazonUserAuthContext.
-        private BangazonWebContext context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductsController (BangazonWebContext ctx)
+        private ApplicationDbContext newContext;
+        private BangazonWebContext context;
+        public ProductsController(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2)
         {
-            context = ctx;
+            _userManager = userManager;
+            newContext = ctx1;
+            context = ctx2;
         }
 
-        //Storing our ActiveCustomer singleton in an private instance.
-        private ActiveCustomer singleton = ActiveCustomer.Instance;
+        // This task retrieves the currently authenticated user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         //Method Name: Index
         //Purpose of the Method: This method is the first method that is loaded when a user visits Bangazon. This method will get all of the products in the database and show them on the homepage.
         //Arguments in Method: None.
         public async Task<IActionResult> Index()
         {
-            AllProductsViewModel model = new AllProductsViewModel(context);
+            AllProductsViewModel model = new AllProductsViewModel(_userManager, newContext, context);
 
             model.Products = await context.Product.ToListAsync();
  
@@ -44,7 +47,7 @@ namespace BangazonUserAuth.Controllers
         //Arguments in Method: None.
         public async Task<IActionResult> Types()
         {
-            AllProductTypesViewModel model = new AllProductTypesViewModel(context);
+            AllProductTypesViewModel model = new AllProductTypesViewModel(_userManager, newContext, context);
            
             model.ProductTypes = await context.ProductType.ToListAsync();
 
@@ -60,7 +63,7 @@ namespace BangazonUserAuth.Controllers
             {
                 return NotFound();
             }
-            AllSubProductTypesViewModel model = new AllSubProductTypesViewModel(context);
+            AllSubProductTypesViewModel model = new AllSubProductTypesViewModel(_userManager, newContext, context);
 
             model.SubProductTypes = await context.SubProductType.Where(p => p.ProductTypeId == id).ToListAsync();
             model.ProductType = await context.ProductType.Where(p => p.ProductTypeId == id).SingleOrDefaultAsync();
@@ -77,7 +80,7 @@ namespace BangazonUserAuth.Controllers
         //Arguments in Method: Gets the subtypeId from the route.
         public async Task<IActionResult> ProductsInSubType([FromRoute] int id) 
         {
-            AllProductsViewModel model = new AllProductsViewModel(context);
+            AllProductsViewModel model = new AllProductsViewModel(_userManager, newContext, context);
 
             model.Products =  await context.Product.Where(p => p.SubProductTypeId == id).ToListAsync();
             model.SubProductType = await context.SubProductType.Where(p => p.SubProductTypeId == id).SingleOrDefaultAsync();
@@ -101,7 +104,7 @@ namespace BangazonUserAuth.Controllers
                 return NotFound();
             }
             
-            SingleProductViewModel model = new SingleProductViewModel(context);
+            SingleProductViewModel model = new SingleProductViewModel(_userManager, newContext, context);
 
             var SingleProduct = await context.Product.SingleOrDefaultAsync(p => p.ProductId == id);
             
@@ -121,9 +124,12 @@ namespace BangazonUserAuth.Controllers
         //Method Name: New
         //Purpose of the Method: This method returns the New.cshtml file in the Products folder, which will contain a form to add a new product.
         //Arguments in Method: None.
-        public IActionResult New()
+        public async Task<IActionResult> New()
         {
-            ProductTypesListViewModel model = new ProductTypesListViewModel(context);
+            var user = await GetCurrentUserAsync();
+            var CustomerId = user.CustomerId;
+            ProductTypesListViewModel model = new ProductTypesListViewModel(_userManager, newContext, context);
+            model.ActiveCustomerId = CustomerId;
             return View(model);
         }
 
@@ -151,18 +157,20 @@ namespace BangazonUserAuth.Controllers
          [HttpPost]
          public async Task<IActionResult> AddToCart([FromRoute] int id)
          {
-             //Get the active customer's order
-             var activeOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==singleton.Customer.CustomerId).SingleOrDefaultAsync(); 
+            var user = await GetCurrentUserAsync();
+            var CustomerId = user.CustomerId;
+            //Get the active customer's order
+            var activeOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==CustomerId).SingleOrDefaultAsync(); 
 
              // If no active order create one and add the product to it.
              if (activeOrder == null)
              {
                  var order = new Order();
                  order.IsCompleted = false;
-                 order.CustomerId = singleton.Customer.CustomerId;
+                 order.CustomerId = CustomerId;
                  context.Add(order);
                  await context.SaveChangesAsync();
-                 var newOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==singleton.Customer.CustomerId).SingleOrDefaultAsync();
+                 var newOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==CustomerId).SingleOrDefaultAsync();
                  var lineItem = new LineItem();
                  lineItem.OrderId = newOrder.OrderId;
                  lineItem.ProductId = Convert.ToInt32(id);
