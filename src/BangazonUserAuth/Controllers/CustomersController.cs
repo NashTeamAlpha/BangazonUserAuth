@@ -7,6 +7,7 @@ using BangazonUserAuth.Data;
 using BangazonUserAuth.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BangazonUserAuth.Controllers
 {
@@ -16,25 +17,19 @@ namespace BangazonUserAuth.Controllers
     // Methods in Class: New(), Overloaded New(Customer customer) ShoppingCart(), Payment(), OrderCompleted().
     public class CustomersController : Controller
     {
-        //Bringing in the context from our DB and storing it in a local variable named BangazonUserAuthContext.
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        private ApplicationDbContext newContext;
         private BangazonWebContext context;
-        public CustomersController(BangazonWebContext ctx)
+        public CustomersController(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2)
         {
-            context = ctx;
+            _userManager = userManager;
+            newContext = ctx1;
+            context = ctx2;
         }
 
-        //Storing our ActiveCustomer singleton in an private instance.
-        private ActiveCustomer singleton = ActiveCustomer.Instance;
-
-        //Method Name: New
-        //Purpose of the Method: Loads new customer form to the view, view wil be static.
-        //Arguments in Method: None.
-        [HttpGet]
-        public IActionResult New()
-        {
-            NewCustomerViewModel model = new NewCustomerViewModel(context);
-            return View(model);
-        }
+        // This task retrieves the currently authenticated user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         //Method Name: Overloaded New
         //Purpose of the Method: Will take an optional parameter of the type "customer." Takes form data then checks its validity. Post to customer table in database then redirects to home page.
@@ -70,17 +65,18 @@ namespace BangazonUserAuth.Controllers
         [HttpGet]
         public async Task<IActionResult> ShoppingCart()
         {
+            var user = await GetCurrentUserAsync();
+            var CustomerId = user.CustomerId;
+            var activeOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==CustomerId).SingleOrDefaultAsync();
 
-            var activeOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==singleton.Customer.CustomerId).SingleOrDefaultAsync();
-            Console.WriteLine(activeOrder);
-
-            ShoppingCartViewModel model = new ShoppingCartViewModel(context);
+            ShoppingCartViewModel model = new ShoppingCartViewModel(_userManager, newContext, context);
 
             if (activeOrder == null)
             {
                var product = new Product(){Description="You have no products in your cart!", Name=""};
                 model.Products = new List<Product>();
                 model.Products.Add(product);
+                model.ActiveCustomerId = CustomerId;
                 return View(model);
             }
 
@@ -110,7 +106,7 @@ namespace BangazonUserAuth.Controllers
          public IActionResult Payment()
         {
 
-            PaymentTypeViewModel model = new PaymentTypeViewModel(context);
+            PaymentTypeViewModel model = new PaymentTypeViewModel(_userManager, newContext, context);
 
             return View(model);
         }
@@ -137,7 +133,7 @@ namespace BangazonUserAuth.Controllers
         public IActionResult OrderCompleted()
         {
 
-            BaseViewModel model = new BaseViewModel(context);
+            BaseViewModel model = new BaseViewModel(_userManager, newContext, context);
 
             return View(model);
         }
@@ -147,7 +143,9 @@ namespace BangazonUserAuth.Controllers
         [HttpPatch]
         public async Task<IActionResult> SubmitOrder([FromRoute]int id)
         {
-            var activeOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==singleton.Customer.CustomerId)
+            var user = await GetCurrentUserAsync();
+            var CustomerId = user.CustomerId;
+            var activeOrder = await context.Order.Where(o => o.IsCompleted == false && o.CustomerId==CustomerId)
             .SingleOrDefaultAsync();
             activeOrder.PaymentType = context.PaymentType.Where(pt => pt.PaymentTypeId == id).SingleOrDefault();
             activeOrder.DateCompleted = DateTime.Today;
@@ -156,26 +154,6 @@ namespace BangazonUserAuth.Controllers
             await context.SaveChangesAsync();
 
             return Json(id);
-        }
-        //Method Name: Activate
-        //Purpose of the Method: To change the current ActiveCustomer singleton to whatever is selected in the top right dropdown select option.
-        //Arguments in Method: Takes a CustomerId from the drop down select option in the navigation bar on change of selected option. 
-        [HttpPost]
-        public IActionResult Activate([FromRoute]int id)
-        {
-            // Find the corresponding customer in the DB
-            var customer = context.Customer.SingleOrDefault(c => c.CustomerId == id);
-
-            // Return 404 if not found
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            // Set the active customer to the selected on
-            ActiveCustomer.Instance.Customer = customer;
-
-            return Json(customer);
         }
     }
 }

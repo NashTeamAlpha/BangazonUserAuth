@@ -3,6 +3,7 @@ using BangazonUserAuth.Data;
 using BangazonUserAuth.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 
 namespace BangazonUserAuth.ViewModels
 {
@@ -14,11 +15,12 @@ namespace BangazonUserAuth.ViewModels
   {
     public List<SelectListItem> ProductTypesList { get; set; }
     public List<SelectListItem> SubProductTypesList { get; set; }
+    public int ActiveCustomerId { get; set; }
     public Product Product {get; set;}
     private BangazonWebContext context;
-    public ProductTypesListViewModel(BangazonWebContext ctx) : base(ctx)
-    { 
-        context = ctx;
+    public ProductTypesListViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2) : base(userManager, ctx1, ctx2)
+        { 
+        context = ctx2;
         this.ProductTypesList = context.ProductType
           .OrderBy(type => type.Name)
           .AsEnumerable()

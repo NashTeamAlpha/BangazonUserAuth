@@ -1,6 +1,7 @@
 using System.Linq;
 using BangazonUserAuth.Data;
 using BangazonUserAuth.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BangazonUserAuth.ViewModels
 {   //Class Name: SingleProductViewModel
@@ -14,6 +15,6 @@ namespace BangazonUserAuth.ViewModels
 
         public string CustomerName {get;set;} //Displayed on detail view to show sellers name.
 
-        public SingleProductViewModel(BangazonWebContext ctx) : base(ctx) {} 
+        public SingleProductViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2) : base(userManager, ctx1, ctx2) { } 
     }
 }

@@ -24,7 +24,7 @@
             contentType: 'application/json; charset=utf-8'
         }).done((id) => {
             console.log(id);
-            window.location.replace("http://localhost:5000"); 
+            window.location.replace("http://localhost:5000");
         });
     });
 //Submits order then routes to order completed page
@@ -36,7 +36,7 @@
             contentType: 'application/json; charset=utf-8'
         }).done((id) => {
             console.log(id);
-            window.location.replace("http://localhost:5000/Customers/OrderCompleted"); 
+            window.location.replace("http://localhost:5000/Customers/OrderCompleted");
         });
     });
 });

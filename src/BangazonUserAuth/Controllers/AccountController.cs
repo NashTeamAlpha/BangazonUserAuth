@@ -23,6 +23,7 @@ namespace BangazonUserAuth.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private ApplicationDbContext newContext;
         private BangazonWebContext context;
 
         public AccountController(
@@ -31,14 +32,16 @@ namespace BangazonUserAuth.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
-            BangazonWebContext ctx)
+            ApplicationDbContext ctx1,
+            BangazonWebContext ctx2)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
-            context = ctx;
+            newContext = ctx1;
+            context = ctx2;
         }
 
 
@@ -117,7 +120,7 @@ namespace BangazonUserAuth.Controllers
                 //Create a new Customer Controller instance
                 //Use the new Customer method to post the Customer instance to the old database
                 //Get the Customer Id back
-                CustomersController customersController = new CustomersController(context);
+                CustomersController customersController = new CustomersController(_userManager, newContext, context);
                 int ActiveCustomerId = customersController.New(customer);
                 //Set the customer Id on the new Application User
                 //Resume logic that's already written
@@ -127,9 +130,6 @@ namespace BangazonUserAuth.Controllers
                     UserName = model.Email,
                     Email = model.Email
                 };
-
-                customer.CustomerId = ActiveCustomerId;
-                ActiveCustomer.Instance.Customer = customer;
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -159,7 +159,7 @@ namespace BangazonUserAuth.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(ProductsController.Index), "Home");
         }
 
         //
@@ -484,7 +484,7 @@ namespace BangazonUserAuth.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(ProductsController.Index), "Home");
             }
         }
 

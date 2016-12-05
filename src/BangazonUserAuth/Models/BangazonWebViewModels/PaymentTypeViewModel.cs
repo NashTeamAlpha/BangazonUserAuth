@@ -1,5 +1,6 @@
 using BangazonUserAuth.Models;
 using BangazonUserAuth.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace BangazonUserAuth.ViewModels
 {
@@ -11,6 +12,6 @@ namespace BangazonUserAuth.ViewModels
     {
         public PaymentType PaymentType { get; set; }
 
-        public PaymentTypeViewModel(BangazonWebContext ctx) : base(ctx) { } 
+        public PaymentTypeViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2) : base(userManager, ctx1, ctx2) { } 
     }
 }
