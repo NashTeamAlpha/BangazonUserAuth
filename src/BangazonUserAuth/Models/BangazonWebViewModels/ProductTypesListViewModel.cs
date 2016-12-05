@@ -15,13 +15,12 @@ namespace BangazonUserAuth.ViewModels
   {
     public List<SelectListItem> ProductTypesList { get; set; }
     public List<SelectListItem> SubProductTypesList { get; set; }
-    public int ActiveCustomerId { get; set; }
+    private ApplicationDbContext newContext { get; set; }
     public Product Product {get; set;}
-    private BangazonWebContext context;
-    public ProductTypesListViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2) : base(userManager, ctx1, ctx2)
-        { 
-        context = ctx2;
-        this.ProductTypesList = context.ProductType
+    public ProductTypesListViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1) : base(userManager, ctx1)
+        {
+            newContext = ctx1;
+        this.ProductTypesList = newContext.ProductType
           .OrderBy(type => type.Name)
           .AsEnumerable()
           .Select(li => new SelectListItem{

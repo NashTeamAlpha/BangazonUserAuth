@@ -14,13 +14,25 @@ namespace BangazonUserAuth.Data
             : base(options)
         {
         }
+        public DbSet<LineItem> LineItem { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<PaymentType> PaymentType { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductType> ProductType { get; set; }
+        public DbSet<SubProductType> SubProductType { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
+            // When an Order is being created we are setting a DateCreated property here of current: Year, Month, Day, Hour, Minute, and Second.
+            modelBuilder.Entity<Order>()
+                .Property(b => b.DateCreated)
+                .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
+
+            // When a Product is being created we are setting a DateCreated property here of current: Year, Month, Day, Hour, Minute, and Second.
+            modelBuilder.Entity<Product>()
+                .Property(b => b.DateCreated)
+                .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
         }
     }
 }

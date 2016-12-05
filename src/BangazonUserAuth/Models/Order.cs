@@ -20,8 +20,8 @@ namespace BangazonUserAuth.Models
         public PaymentType PaymentType {get; set;}
 
         [Required]
-        public int CustomerId {get; set;}
-        public Customer Customer {get; set;}
+        public virtual ApplicationUser User { get; set; }
+
         public ICollection<LineItem> LineItems; 
 
         [Required]

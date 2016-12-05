@@ -24,7 +24,6 @@ namespace BangazonUserAuth.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private ApplicationDbContext newContext;
-        private BangazonWebContext context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -32,8 +31,7 @@ namespace BangazonUserAuth.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
-            ApplicationDbContext ctx1,
-            BangazonWebContext ctx2)
+            ApplicationDbContext ctx1)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,7 +39,6 @@ namespace BangazonUserAuth.Controllers
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
             newContext = ctx1;
-            context = ctx2;
         }
 
 
@@ -113,22 +110,14 @@ namespace BangazonUserAuth.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                //Create a new customer with first and last name properties
-                Customer customer = new Customer();
-                customer.FirstName = model.FirstName;
-                customer.LastName = model.LastName;
-                //Create a new Customer Controller instance
-                //Use the new Customer method to post the Customer instance to the old database
-                //Get the Customer Id back
-                CustomersController customersController = new CustomersController(_userManager, newContext, context);
-                int ActiveCustomerId = customersController.New(customer);
                 //Set the customer Id on the new Application User
                 //Resume logic that's already written
                 var user = new ApplicationUser
                 {
-                    CustomerId = ActiveCustomerId,
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -159,7 +148,7 @@ namespace BangazonUserAuth.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(ProductsController.Index), "Home");
+            return RedirectToAction(nameof(ProductsController.Index), "");
         }
 
         //
@@ -484,7 +473,7 @@ namespace BangazonUserAuth.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(ProductsController.Index), "Home");
+                return RedirectToAction(nameof(ProductsController.Index), "");
             }
         }
 

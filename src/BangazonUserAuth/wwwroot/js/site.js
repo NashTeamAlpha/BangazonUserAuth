@@ -11,7 +11,7 @@
             $("#Product_SubProductTypeId").append("<option value=null> Choose a Sub Category </option>");
             subTypes.forEach((option) => {
                 console.log(option);
-                $("#Product_SubProductTypeId").append(`<option value="${option.subProductTypeId}">${option.name}</option>`)
+                $("#Product_SubProductTypeId").append(`<option value="${option.subProductTypeId}">${option.name}</option>`);
             });
         });
     });

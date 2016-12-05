@@ -15,6 +15,6 @@ namespace BangazonUserAuth.ViewModels
 
         public string CustomerName {get;set;} //Displayed on detail view to show sellers name.
 
-        public SingleProductViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2) : base(userManager, ctx1, ctx2) { } 
+        public SingleProductViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1) : base(userManager, ctx1) { } 
     }
 }
