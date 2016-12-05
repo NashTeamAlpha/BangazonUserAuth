@@ -8,6 +8,7 @@ using BangazonUserAuth.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BangazonUserAuth.Controllers
 {
@@ -77,6 +78,20 @@ namespace BangazonUserAuth.Controllers
                 model.Products = new List<Product>();
                 model.Products.Add(product);
                 model.ActiveCustomerId = CustomerId;
+                model.ListOfPaymentTypes = context.PaymentType
+               .Where(pt => pt.CustomerId == CustomerId)
+               .AsEnumerable()
+               .Select(pt => new SelectListItem
+               {
+                   Text = $"{pt.FirstName} {pt.LastName} {pt.Processor} {pt.ExpirationDate}",
+                   Value = pt.PaymentTypeId.ToString()
+               }).ToList();
+
+                model.ListOfPaymentTypes.Insert(0, new SelectListItem
+
+                {
+                    Text = "Choose Payment Type"
+                });
                 return View(model);
             }
 
@@ -92,6 +107,20 @@ namespace BangazonUserAuth.Controllers
                 CartTotal += context.Product.Where(p => p.ProductId == LineItemsOnActiveOrder[i].ProductId).SingleOrDefault().Price;
             }
 
+            model.ListOfPaymentTypes = context.PaymentType
+               .Where(pt => pt.CustomerId == CustomerId)
+               .AsEnumerable()
+               .Select(pt => new SelectListItem
+               {
+                   Text = $"{pt.FirstName} {pt.LastName} {pt.Processor} {pt.ExpirationDate}",
+                   Value = pt.PaymentTypeId.ToString()
+               }).ToList();
+
+            model.ListOfPaymentTypes.Insert(0, new SelectListItem
+
+            {
+                Text = "Choose Payment Type"
+            });
             model.CartTotal = CartTotal;
             model.Products = ListOfProducts;
 
@@ -103,10 +132,12 @@ namespace BangazonUserAuth.Controllers
         //Purpose of the Method: Method should take you to the Payment view with form to add Payment.
         //Arguments in Method: None.
          [HttpGet]
-         public IActionResult Payment()
+         public async Task<IActionResult> Payment()
         {
+            var user = await GetCurrentUserAsync();
 
             PaymentTypeViewModel model = new PaymentTypeViewModel(_userManager, newContext, context);
+            model.ActiveCustomerId = user.CustomerId;
 
             return View(model);
         }

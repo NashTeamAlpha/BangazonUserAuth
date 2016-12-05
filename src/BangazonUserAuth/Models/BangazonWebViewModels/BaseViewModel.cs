@@ -25,36 +25,37 @@ namespace BangazonUserAuth.ViewModels
      }
 
     public BaseViewModel() { }
-    //private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-    //public string ShoppingCartItems {
-    //  get {
-    //     var user = GetCurrentUserAsync();
-    //     var ActiveCustomerId = user.CustomerId;
-    //     Customer customer = context.Customer.Single(c => c.CustomerId == ActiveCustomerId)
-         
+    
+        //private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+        //public string ShoppingCartItems {
+        //  get {
+        //     var user = GetCurrentUserAsync();
+        //     var ActiveCustomerId = user.CustomerId;
+        //     Customer customer = context.Customer.Single(c => c.CustomerId == ActiveCustomerId)
 
-    //    if (customer == null)
-    //    {
-    //      // Return null because there should not be a number next to the link if a customer has not been chosen.
-    //      return "";
-    //    }
-    //    if (customer != null){
-    //      //If there is a customer but the customer does not have an active order then the shopping cart should have 0 items in it.
-    //       Order order = context.Order.Where(o => o.CustomerId == customer.CustomerId && o.IsCompleted == false).SingleOrDefault();
-    //       if (order == null){
-    //         return " (0)";
-    //       }
-    //       //If the user has an active order then the number of products in that order will be returned
-    //       if (order != null){
-    //        List<LineItem> lineItems = context.LineItem.Where(l => l.OrderId == order.OrderId).ToList();
-    //        string shoppingCartCount = lineItems.Count.ToString();
-    //        return " ("+shoppingCartCount+")";
-    //       }
-    //    }
-    //    return "";
-    //  }
-    //}
-        
-  }
+
+        //    if (customer == null)
+        //    {
+        //      // Return null because there should not be a number next to the link if a customer has not been chosen.
+        //      return "";
+        //    }
+        //    if (customer != null){
+        //      //If there is a customer but the customer does not have an active order then the shopping cart should have 0 items in it.
+        //       Order order = context.Order.Where(o => o.CustomerId == customer.CustomerId && o.IsCompleted == false).SingleOrDefault();
+        //       if (order == null){
+        //         return " (0)";
+        //       }
+        //       //If the user has an active order then the number of products in that order will be returned
+        //       if (order != null){
+        //        List<LineItem> lineItems = context.LineItem.Where(l => l.OrderId == order.OrderId).ToList();
+        //        string shoppingCartCount = lineItems.Count.ToString();
+        //        return " ("+shoppingCartCount+")";
+        //       }
+        //    }
+        //    return "";
+        //  }
+        //}
+
+    }
 }
 

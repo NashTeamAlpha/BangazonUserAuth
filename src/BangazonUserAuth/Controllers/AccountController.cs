@@ -159,7 +159,7 @@ namespace BangazonUserAuth.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(ProductsController.Index), "Home");
+            return RedirectToAction(nameof(ProductsController.Index), "");
         }
 
         //
@@ -484,7 +484,7 @@ namespace BangazonUserAuth.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(ProductsController.Index), "Home");
+                return RedirectToAction(nameof(ProductsController.Index), "");
             }
         }
 

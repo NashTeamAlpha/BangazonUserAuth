@@ -11,7 +11,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>    
         <div class="form-group">
             <div class="col-md-10">
-                <input type="hidden" asp-for="PaymentType.CustomerId" value=@Model.ChosenCustomer.CustomerId class="form-control" />
+                <input type="hidden" asp-for="PaymentType.CustomerId" value=@Model.ActiveCustomerId class="form-control" />
             </div>
         </div>
         <div class="form-group">

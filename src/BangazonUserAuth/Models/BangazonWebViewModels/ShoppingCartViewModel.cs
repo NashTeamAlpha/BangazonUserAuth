@@ -31,19 +31,7 @@ namespace BangazonUserAuth.ViewModels
             _userManager = userManager;
             newContext = ctx1;
             context = ctx2;
-            this.ListOfPaymentTypes = context.PaymentType
-                .Where(pt => pt.CustomerId == ActiveCustomerId)
-                .AsEnumerable()
-                .Select(pt => new SelectListItem
-                {
-                    Text = $"{pt.FirstName} {pt.LastName} {pt.Processor} {pt.ExpirationDate}",
-                    Value = pt.PaymentTypeId.ToString()
-                }).ToList();
-
-            this.ListOfPaymentTypes.Insert(0, new SelectListItem
-            {
-                Text = "Choose Payment Type"
-            });
+           
         }
     }
 }
