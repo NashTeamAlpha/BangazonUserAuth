@@ -12,11 +12,11 @@ namespace BangazonUserAuth.Models
     {
         [Key]
         public int PaymentTypeId {get;set;}
-        
-        [Required]
-        public int CustomerId {get;set;}
 
-        public Customer Customer {get;set;}
+
+        [Required]
+        public virtual ApplicationUser User { get; set; }
+
 
         [Required]
         public string CardNumber {get;set;}

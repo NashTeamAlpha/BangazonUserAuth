@@ -13,6 +13,6 @@ namespace BangazonUserAuth.ViewModels
     {
         public IEnumerable<ProductType> ProductTypes { get; set; }
 
-        public AllProductTypesViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2) : base(userManager, ctx1, ctx2) { } 
+        public AllProductTypesViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1) : base(userManager, ctx1) { } 
     }
 }

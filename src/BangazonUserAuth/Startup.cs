@@ -55,10 +55,6 @@ namespace BangazonUserAuth
                         .AllowAnyHeader());
             });
 
-            string path = System.Environment.GetEnvironmentVariable("NTABangazonWeb_Db_Path");
-            var connection = $"Filename={path}";
-            services.AddDbContext<BangazonWebContext>(options => options.UseSqlite(connection));
-
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();

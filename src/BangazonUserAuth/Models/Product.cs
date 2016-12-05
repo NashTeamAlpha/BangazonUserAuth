@@ -29,9 +29,9 @@ namespace BangazonUserAuth.Models
     [Required]  // Added to ProductTypeId
     public int SubProductTypeId { get; set; }
     public SubProductType SubProductType { get; set; }
-    public ICollection<LineItem> LineItems; 
+    public ICollection<LineItem> LineItems;
     [Required]
-    public int CustomerId {get;set;}
-    public Customer Customer {get;set;}
-  }
+    public virtual ApplicationUser User { get; set; }
+
+    }
 }

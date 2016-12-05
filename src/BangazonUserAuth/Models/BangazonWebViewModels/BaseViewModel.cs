@@ -14,14 +14,12 @@ namespace BangazonUserAuth.ViewModels
   public class BaseViewModel
     {
     private ApplicationDbContext newContext;
-    private BangazonWebContext context;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public BaseViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1, BangazonWebContext ctx2)
+    public BaseViewModel(UserManager<ApplicationUser> userManager, ApplicationDbContext ctx1)
     {
             _userManager = userManager;
             newContext = ctx1;
-            context = ctx2;
      }
 
     public BaseViewModel() { }
